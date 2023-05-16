@@ -1,0 +1,11 @@
+<div class="product-container">
+  <div class="product-image">
+    <img [src]="product.image" alt="{{ product.name }}">
+  </div>
+  <div class="product-details">
+    <h2>{{ product.name }}</h2>
+    <p>{{ product.description }}</p>
+    <h3>{{ product.price }}</h3>
+    <button mat-raised-button color="primary">Add to Cart</button>
+  </div>
+</div>
