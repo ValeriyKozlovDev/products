@@ -1,3 +1,4 @@
+import { LoginUserDto } from './../dto/login-user.dto';
 import { User } from './../../schemas/user.schema';
 import { UsersService } from './../../users/services/users.service';
 import { HttpException, HttpStatus, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
@@ -16,7 +17,7 @@ export class AuthService {
         private jwtService: JwtService
     ) { }
 
-    async login(userDto: CreateUserDto) {
+    async login(userDto: LoginUserDto) {
         const user = await this.validateUser(userDto)
         return this.generateToken(user)
     }
@@ -40,7 +41,7 @@ export class AuthService {
         }
     }
 
-    private async validateUser(userDto: CreateUserDto) {
+    private async validateUser(userDto: LoginUserDto) {
         const user = await this.usersService.findUserByEmailWithPassword(userDto.email);
         const passwordEquals = await bcrypt.compare(userDto.password, user.password);
         if (user && passwordEquals) {

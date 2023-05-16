@@ -4,8 +4,7 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Store } from '@ngrx/store';
 import { catchError, Observable, Subject, tap, throwError } from "rxjs";
 
-import { User, AuthResponse } from '../store/interfaces';
-import { environment } from '../../../environments/environment.prod';
+import { IUser, AuthResponse } from '../store/interfaces';
 import { setLoading } from '../store/auth.actions';
 
 @Injectable()
@@ -23,8 +22,9 @@ export class AuthService {
     return localStorage.getItem('token')
   }
 
-  login(user: User): Observable<any> {
-    user.returnSecureToken = true
+  login(user: IUser): Observable<IUser | any> {
+    // user.returnSecureToken = true
+    console.log(user)
     return this.http.post(`http://localhost:5000/auth/login`, user)
       .pipe(
         tap(this.setToken),
@@ -32,7 +32,7 @@ export class AuthService {
       )
   }
 
-  create(user: User): Observable<any> {
+  create(user: IUser): Observable<IUser | any> {
     user.returnSecureToken = true
     return this.http.post(`http://localhost:5000/auth/signup`, user)
       .pipe(

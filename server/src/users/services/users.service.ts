@@ -28,8 +28,7 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new HttpException('User Not Found', HttpStatus.NOT_FOUND)
-
+      // throw new HttpException('User Not Found', HttpStatus.NOT_FOUND)
     }
 
     return user;

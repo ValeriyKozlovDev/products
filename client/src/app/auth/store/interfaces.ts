@@ -4,8 +4,9 @@ export interface AuthState {
   userLogin: string
 }
 
-export interface User {
+export interface IUser {
   email: string,
+  name?: string,
   password: string,
   returnSecureToken?: boolean
 }

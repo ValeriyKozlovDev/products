@@ -7,16 +7,6 @@ const routes: Routes = [
   {
     path: '',
     component: ProductsComponent,
-    // children: [
-    //   {
-    //     path: 'bbb',
-    //     loadChildren: () =>
-    //       import('../product-page/product-page.module').then(
-    //         (module) => module.ProductPageModule,
-    //       ),
-    //     // canActivate: [AuthGuard],
-    //   },
-    // ]
   }
 ];
 
