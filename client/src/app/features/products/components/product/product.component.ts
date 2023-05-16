@@ -1,6 +1,7 @@
-import { SharedModule } from './../../../shared/shared.module';
 import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
+
+import { SharedModule } from '../../../../shared/shared.module';
 
 @Component({
   standalone: true,

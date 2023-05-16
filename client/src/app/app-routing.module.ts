@@ -1,19 +1,18 @@
+import { AuthGuard } from './auth/guards/auth.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  {
-    path: 'auth',
-    loadChildren: () =>
-      import('./features/auth/auth.module').then((module) => module.AuthModule),
-  },
+
+  { path: '', redirectTo: '/auth', pathMatch: 'full' },
+
   {
     path: 'products',
     loadChildren: () =>
       import('./features/products/products.module').then(
         (module) => module.ProductsModule,
       ),
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'product',
@@ -21,7 +20,14 @@ const routes: Routes = [
       import('./features/product-page/product-page.module').then(
         (module) => module.ProductPageModule,
       ),
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'auth',
+    loadChildren: () =>
+      import('./auth/auth.module').then(
+        (module) => module.AuthModule,
+      ),
   },
 ];
 
