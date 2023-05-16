@@ -1,4 +1,4 @@
-import { User } from './store/interfaces';
+import { IUser } from './store/interfaces';
 import { setLoading, setUserLogin } from './store/auth.actions';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
@@ -33,8 +33,14 @@ export class AuthComponent {
 
 
   ngOnInit(): void {
+    this.formInit()
+
+  }
+
+  formInit() {
     this.formGroup = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
+      name: new FormControl(''),
       password: new FormControl('', [Validators.required, Validators.minLength(6)])
     });
   }
@@ -44,19 +50,25 @@ export class AuthComponent {
   }
 
   onSubmit() {
-    if (this.formGroup.invalid) {
+    if (this.formGroup.invalid || (!this.haveAcc && !this.formGroup.value.name.length)) {
       return
     }
     this.store.dispatch(setLoading({ data: true }))
     this.submitted = true
+    let user: IUser
 
-    const user: User = {
-      email: this.formGroup.value.email,
-      password: this.formGroup.value.password
-    }
     if (this.haveAcc) {
+      user = {
+        email: this.formGroup.value.email,
+        password: this.formGroup.value.password
+      }
       this.signIn(user)
     } else {
+      user = {
+        email: this.formGroup.value.email,
+        name: this.formGroup.value.name,
+        password: this.formGroup.value.password
+      }
       this.auth.create(user).pipe(takeUntil(this.destroy)).subscribe((response) => {
         this.signIn(user)
       }, () => {
@@ -66,12 +78,12 @@ export class AuthComponent {
     }
   }
 
-  signIn(user: User) {
+  signIn(user: IUser) {
     this.auth.login(user).pipe(takeUntil(this.destroy)).subscribe((response) => {
       this.store.dispatch(setLoading({ data: false }))
       this.store.dispatch(setUserLogin({ data: user.email }))
       this.formGroup.reset()
-      this.router.navigate(['/main'])
+      this.router.navigate(['/products'])
     }, () => {
       this.submitted = false
     }

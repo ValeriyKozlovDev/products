@@ -1,3 +1,4 @@
+import { LoginUserDto } from './../dto/login-user.dto';
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
@@ -9,11 +10,11 @@ export class AuthController {
     constructor(private authService: AuthService) { }
 
     @Post('/login')
-    login(@Body() userDto: CreateUserDto) {
+    login(@Body() userDto: LoginUserDto) {
         return this.authService.login(userDto)
     }
 
-    @Post('/singup')
+    @Post('/signup')
     signUp(@Body() userDto: CreateUserDto) {
         return this.authService.signUp(userDto)
     }

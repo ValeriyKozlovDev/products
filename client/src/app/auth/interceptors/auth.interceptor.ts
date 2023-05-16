@@ -7,7 +7,9 @@ import {
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
-  HttpRequest
+  HttpRequest,
+  HttpHeaders,
+
 } from "@angular/common/http";
 import { catchError, Observable, tap, throwError } from "rxjs";
 import { AuthService } from '../services/auth.service';
@@ -22,13 +24,19 @@ export class AuthInterceptor implements HttpInterceptor {
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log(next)
     if (this.auth.isAuthenticated()) {
-      req = req.clone({
-        setParams: {
-          auth: this.auth.token
-        }
-      })
+      const token = localStorage.getItem('token');
+      const clearToken = token?.replace(/"/g, '');
+      const headers = new HttpHeaders({
+        authorization: `${clearToken}`,
+        'Content-Type': 'application/json',
+      });
+      // req = req.clone({
+      //   new HttpHeaders({
+      //     authorization: `${clearToken}`,
+      //     'Content-Type': 'application/json',
+      //   });
+      // })
     }
     return next.handle(req)
       .pipe(
@@ -37,10 +45,34 @@ export class AuthInterceptor implements HttpInterceptor {
           if (error.status === 401) {
             this.store.dispatch(changeAccessFlag({ data: true }))
             this.auth.logout()
-            this.router.navigate(['/login'])
+            this.router.navigate(['/auth'])
           }
           return throwError(error)
         })
       )
   }
 }
+// import { Injectable } from '@angular/core';
+// import {
+//   HttpRequest,
+//   HttpHandler,
+//   HttpEvent,
+//   HttpInterceptor,
+//   HttpHeaders,
+// } from '@angular/common/http';
+
+// import { Observable } from 'rxjs';
+
+// @Injectable()
+// export class AuthInterceptor<T> implements HttpInterceptor {
+//   intercept(req: HttpRequest<T>, next: HttpHandler): Observable<HttpEvent<T>> {
+//     const token = localStorage.getItem('token');
+//     const clearToken = token?.replace(/"/g, '');
+//     const headers = new HttpHeaders({
+//       authorization: `${clearToken}`,
+//       'Content-Type': 'application/json',
+//     });
+//     const authReq = req.clone({ headers });
+//     return next.handle(authReq);
+//   }
+// }
