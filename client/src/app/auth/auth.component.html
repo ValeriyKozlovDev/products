@@ -41,7 +41,9 @@
       <hr>
       <app-text-input [value]="formGroup.value.password" [label]="'Password'" [type]="'password'"
         formControlName="password"></app-text-input>
-
+      <mat-error *ngIf="formGroup.hasError('required', 'password')">
+        Password is not <strong>required</strong>
+      </mat-error>
       <!-- <mat-form-field class="login-form__input-control">
         <mat-label>Password</mat-label>
         <input matInput type="password" formControlName="password">
@@ -61,9 +63,9 @@
       </div>
       <div class="toggle">
         <span *ngIf="registered" class="text">If you haven't account please</span>
-        <button *ngIf="registered" mat-raised-button (click)="accStatus(false)">Sing Up</button>
+        <button *ngIf="registered" mat-raised-button (click)="changeRegistered(false)">Sing Up</button>
         <span *ngIf="!registered" class="text">If you have account please</span>
-        <button *ngIf="!registered" mat-raised-button (click)="accStatus(true)">Sign In</button>
+        <button *ngIf="!registered" mat-raised-button (click)="changeRegistered(true)">Sign In</button>
       </div>
     </form>
   </div>

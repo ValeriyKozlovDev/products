@@ -17,6 +17,7 @@ import { ProductsEffects } from './features/products/store/products.effects';
 import { AuthService } from './auth/services/auth.service';
 import { AuthGuard } from './auth/guards/auth.guard';
 import { AuthInterceptor } from './auth/interceptors/auth.interceptor';
+import { VALIDATION_ERROR_MESSAGES, errorMessages } from './auth/error-handle/error-token';
 
 const INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -46,6 +47,10 @@ const INTERCEPTOR_PROVIDER: Provider = {
     AuthService,
     AuthGuard,
     INTERCEPTOR_PROVIDER,
+    {
+      provide: VALIDATION_ERROR_MESSAGES,
+      useValue: errorMessages
+    }
   ],
   bootstrap: [AppComponent]
 })

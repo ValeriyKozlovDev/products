@@ -20,7 +20,9 @@ import {
   deleteProductSuccess,
   deleteProductFailed
 } from './products.actions';
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ProductsEffects {
 
   getAllProducts$ = createEffect(() => {

@@ -1,3 +1,4 @@
+import { IUser } from './interfaces';
 import { createAction, props } from '@ngrx/store';
 
 import { FormActions } from './auth.action.enum';
@@ -15,5 +16,11 @@ export const setLoading = createAction(
 export const setUserLogin = createAction(
   FormActions.SET_USER_LOGIN,
   props<{ data: string }>()
+)
+
+export const login = createAction(
+  FormActions.LOGIN,
+  props<{ data: IUser }>()
+
 )
 

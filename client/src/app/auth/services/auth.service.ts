@@ -6,9 +6,11 @@ import { catchError, Observable, Subject, tap, throwError } from "rxjs";
 
 import { IUser, AuthResponse } from '../store/interfaces';
 import { setLoading } from '../store/auth.actions';
-import { environment } from "src/environments/environment";
+import { environment } from "../../../environments/environment";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthService {
   constructor(private http: HttpClient, private store: Store) { }
 
