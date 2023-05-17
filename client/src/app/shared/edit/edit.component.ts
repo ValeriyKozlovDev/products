@@ -7,13 +7,14 @@ import { Store } from '@ngrx/store';
 import { SharedModule } from '../shared.module';
 import { changeProductData, createProduct } from '../../features/products/store/products.actions';
 import { IProduct } from '../../features/products/interfaces/products.interfaces';
+import { TextInputComponent } from '../text-input/text-input.component';
 
 @Component({
   standalone: true,
   selector: 'app-edit',
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss'],
-  imports: [SharedModule, CommonModule],
+  imports: [SharedModule, CommonModule, TextInputComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditComponent implements OnInit {
@@ -21,11 +22,11 @@ export class EditComponent implements OnInit {
   public editForm: FormGroup
   constructor(private _store: Store) { }
 
-  ngOnInit() {
-    this.initForm()
+  public ngOnInit() {
+    this._initForm()
   }
 
-  initForm() {
+  private _initForm() {
     if (this.product) {
       this.editForm = new FormGroup({
         name: new FormControl(this.product.name, [Validators.required]),
@@ -43,7 +44,7 @@ export class EditComponent implements OnInit {
     }
   }
 
-  submitForm() {
+  public submitForm() {
     if (this.editForm.invalid) {
       return
     }

@@ -1,0 +1,7 @@
+<mat-form-field class="field-container">
+  <mat-label>{{label}}</mat-label>
+  <input matInput [type]="type" contenteditable [value]="value" (keyup)="onEditorValueChange($event)">
+  <mat-error *ngIf="error">
+    {{label}} is not valid
+  </mat-error>
+</mat-form-field>

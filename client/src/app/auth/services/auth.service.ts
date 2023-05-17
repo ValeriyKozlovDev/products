@@ -23,33 +23,31 @@ export class AuthService {
     return localStorage.getItem('token')
   }
 
-  login(user: IUser): Observable<IUser | any> {
-    // user.returnSecureToken = true
-    console.log(user)
+  public login(user: IUser): Observable<IUser | any> {
     return this.http.post(`${environment.baseUrl}/auth/login`, user)
       .pipe(
-        tap(this.setToken),
-        catchError(this.handleError.bind(this))
+        tap(this._setToken),
+        catchError(this._handleError.bind(this))
       )
   }
 
-  create(user: IUser): Observable<IUser | any> {
+  public create(user: IUser): Observable<IUser | any> {
     user.returnSecureToken = true
     return this.http.post(`${environment.baseUrl}/auth/signup`, user)
       .pipe(
-        catchError(this.handleError.bind(this))
+        catchError(this._handleError.bind(this))
       )
   }
 
-  logout() {
-    this.setToken(null)
+  public logout() {
+    this._setToken(null)
   }
 
-  isAuthenticated(): boolean {
+  public isAuthenticated(): boolean {
     return !!this.token
   }
 
-  handleError(error: HttpErrorResponse) {
+  private _handleError(error: HttpErrorResponse) {
     const { message } = error.error.error
     this.store.dispatch(setLoading({ data: false }))
     switch (message) {
@@ -76,10 +74,10 @@ export class AuthService {
   }
 
 
-  private setToken(response: AuthResponse | null | any) {
+  private _setToken(response: AuthResponse | null | any) {
     if (response) {
       const expDate = new Date(new Date().getTime() + +response.expiresIn * 1000)
-      localStorage.setItem('token', response.idToken)
+      localStorage.setItem('token', response.token)
       localStorage.setItem('token-exp', expDate.toString())
     } else {
       localStorage.clear()

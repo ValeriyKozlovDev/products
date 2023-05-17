@@ -1,5 +1,5 @@
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { NgModule, Provider } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -11,10 +11,18 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './core/header/header.component';
 import { FooterComponent } from './core/footer/footer.component';
-import { AuthModule } from './auth/auth.module';
 import { AuthFeature } from './auth/store/auth.reducer';
 import { ProductsFeature } from './features/products/store/products.reducer';
 import { ProductsEffects } from './features/products/store/products.effects';
+import { AuthService } from './auth/services/auth.service';
+import { AuthGuard } from './auth/guards/auth.guard';
+import { AuthInterceptor } from './auth/interceptors/auth.interceptor';
+
+const INTERCEPTOR_PROVIDER: Provider = {
+  provide: HTTP_INTERCEPTORS,
+  multi: true,
+  useClass: AuthInterceptor
+}
 
 @NgModule({
   declarations: [
@@ -22,7 +30,6 @@ import { ProductsEffects } from './features/products/store/products.effects';
   ],
   imports: [
     BrowserModule,
-    AuthModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HeaderComponent,
@@ -35,7 +42,11 @@ import { ProductsEffects } from './features/products/store/products.effects';
     EffectsModule.forFeature([ProductsEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25 }),
   ],
-  providers: [],
+  providers: [
+    AuthService,
+    AuthGuard,
+    INTERCEPTOR_PROVIDER,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

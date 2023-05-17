@@ -1,28 +1,35 @@
-import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from "@angular/router";
 
+import { Injectable } from '@angular/core';
+import { CanActivate, Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { Store } from '@ngrx/store';
 
-import { changeAccessFlag } from '../store/auth.actions';
 import { AuthService } from '../services/auth.service';
+import { changeAccessFlag } from '../store/auth.actions';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-
   constructor(
-    private auth: AuthService,
-    private router: Router,
-    private store: Store
+    private _auth: AuthService,
+    private _router: Router,
+    private _store: Store,
   ) { }
-  canActivate(
-    route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
-    if (this.auth.isAuthenticated()) {
-      this.store.dispatch(changeAccessFlag({ data: false }))
-      return true
-    } else {
-      this.store.dispatch(changeAccessFlag({ data: true }))
-      this.auth.logout()
-      this.router.navigate(['/login'])
+
+  private _jwtHelper = new JwtHelperService();
+
+  private _isAuthenticated(): boolean {
+    const token: string = localStorage.getItem('token') || '';
+    return !this._jwtHelper.isTokenExpired(token!);
+  }
+
+  public canActivate(): boolean {
+    if (!this._isAuthenticated()) {
+      this._store.dispatch(changeAccessFlag({ data: true }))
+      this._auth.logout()
+      this._router.navigate(['/auth'])
+      return false;
     }
+    this._store.dispatch(changeAccessFlag({ data: false }))
+    return true;
   }
 }

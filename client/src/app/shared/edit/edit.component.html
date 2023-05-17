@@ -1,26 +1,8 @@
 <form [formGroup]="editForm" (ngSubmit)="submitForm()">
-  <mat-form-field>
-    <mat-label>Name</mat-label>
-    <input matInput formControlName="name">
-    <mat-error *ngIf="editForm.hasError('required', 'name')">
-      Name is not <strong>required</strong>
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>description</mat-label>
-    <input matInput formControlName="description">
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>image</mat-label>
-    <input matInput formControlName="image">
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Price</mat-label>
-    <input matInput formControlName="price">
-    <mat-error *ngIf="editForm.hasError('required', 'price')">
-      Name is not <strong>required</strong>
-    </mat-error>
-  </mat-form-field>
-
+  <app-text-input [value]="editForm.value.name" [label]="'Name'" formControlName="name"></app-text-input>
+  <app-text-input [value]="editForm.value.description" [label]="'Description'"
+    formControlName="description"></app-text-input>
+  <app-text-input [value]="editForm.value.image" [label]="'Image'" formControlName="image"></app-text-input>
+  <app-text-input [value]="editForm.value.price" [label]="'Price'" formControlName="price"></app-text-input>
   <button mat-raised-button color="primary" [disabled]="editForm.invalid">Submit changes</button>
 </form>

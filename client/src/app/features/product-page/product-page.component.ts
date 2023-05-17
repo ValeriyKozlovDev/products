@@ -1,16 +1,15 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-
-import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '../../shared/shared.module';
 import { EditComponent } from '../../shared/edit/edit.component';
 import { IProduct } from '../products/interfaces/products.interfaces';
 import { ProductsFeature } from '../products/store/products.reducer';
-import { getFullProduct } from '../products/store/products.actions';
+import { getAllProducts, getFullProduct } from '../products/store/products.actions';
 
 @Component({
   standalone: true,
@@ -26,19 +25,13 @@ import { getFullProduct } from '../products/store/products.actions';
 })
 export class ProductPageComponent implements OnInit {
   public product$: Observable<IProduct> = this._store.select(ProductsFeature.selectProduct)
-  product = {
-    name: 'name1',
-    description: 'alkfmsdkskdmgopsdmgksdms oksdgm ksgksod msdklsgdl mskldm',
-    price: 1,
-    image: 'https://pcshop.ua/image/cache/catalog/tovar/29408_2-1024x768.jpg',
-  }
   constructor(
     private _store: Store,
-    private router: Router,
+    private _router: Router,
   ) { }
 
-  ngOnInit() {
-    this._store.dispatch(getFullProduct({ id: +(this.router.url.split('/'))[2] }))
+  public ngOnInit() {
+    this._store.dispatch(getFullProduct({ id: +(this._router.url.split('/'))[2] }))
   }
 }
 

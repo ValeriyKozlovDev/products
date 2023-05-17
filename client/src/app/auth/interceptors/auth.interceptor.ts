@@ -6,42 +6,39 @@ import {
   HttpErrorResponse,
   HttpEvent,
   HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
   HttpHeaders,
-
+  HttpInterceptor,
+  HttpRequest
 } from "@angular/common/http";
-import { catchError, Observable, throwError } from "rxjs";
+import { catchError, Observable, tap, throwError } from "rxjs";
 import { AuthService } from '../services/auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
   constructor(
-    private auth: AuthService,
-    private router: Router,
-    private store: Store
+    private _auth: AuthService,
+    private _router: Router,
+    private _store: Store
   ) { }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (this.auth.isAuthenticated()) {
+  public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (this._auth.isAuthenticated()) {
       const token = localStorage.getItem('token');
-      const clearToken = token?.replace(/"/g, '');
       const headers = new HttpHeaders({
-        authorization: `${clearToken}`,
+        authorization: `${token}`,
         'Content-Type': 'application/json',
-      });
-      const authReq = req.clone({ headers });
-      return next.handle(authReq);
+      })
+      req = req.clone({ headers })
     }
     return next.handle(req)
       .pipe(
         catchError((error: HttpErrorResponse) => {
           console.warn('[Interceptor error]', error)
           if (error.status === 401) {
-            this.store.dispatch(changeAccessFlag({ data: true }))
-            this.auth.logout()
-            this.router.navigate(['/auth'])
+            this._store.dispatch(changeAccessFlag({ data: true }))
+            this._auth.logout()
+            this._router.navigate(['/auth'])
           }
           return throwError(error)
         })

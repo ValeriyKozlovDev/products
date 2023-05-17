@@ -28,10 +28,11 @@ export class ProductsComponent implements OnInit {
   public products$: Observable<IProduct[]> = this._store.select(ProductsFeature.selectProducts)
   constructor(private _store: Store) { }
 
-  ngOnInit() {
+  public ngOnInit() {
     this._store.dispatch(getAllProducts())
   }
-  deleteProduct(id: number) {
+
+  public deleteProduct(id: number) {
     this._store.dispatch(deleteProduct({ data: id }))
   }
 }

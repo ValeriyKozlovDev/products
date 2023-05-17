@@ -11,26 +11,26 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class ProductsService {
-  constructor(private http: HttpClient) { }
+  constructor(private _http: HttpClient) { }
 
 
   public getAllProducts(): Observable<IProduct[]> {
     const url = `${environment.baseUrl}/products`;
-    return this.http.get<IProduct[]>(url);
+    return this._http.get<IProduct[]>(url);
   }
 
   public changeProductData(product: IProduct): Observable<IProduct> {
     const url = `${environment.baseUrl}/products/${product.id}`;
-    return this.http.put<IProduct>(url, product);
+    return this._http.put<IProduct>(url, product);
   }
 
   public createProduct(product: IProduct): Observable<IProduct> {
     const url = `${environment.baseUrl}/products`;
-    return this.http.post<IProduct>(url, product);
+    return this._http.post<IProduct>(url, product);
   }
 
   public deleteProduct(id: number): Observable<string> {
     const url = `${environment.baseUrl}/products/${id}`;
-    return this.http.delete<string>(url);
+    return this._http.delete<string>(url);
   }
 }
