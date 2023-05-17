@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Store } from '@ngrx/store';
@@ -9,21 +9,23 @@ import { AuthFeature } from './store/auth.reducer';
 import { IUser } from './store/interfaces';
 import { setLoading, setUserLogin } from './store/auth.actions';
 import { AuthService } from './services/auth.service';
+import { DestroyDirective } from '../shared/directives/destroy.directive';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.scss']
+  styleUrls: ['./auth.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [DestroyDirective],
 })
-export class AuthComponent {
-  haveAcc = true
-  formGroup!: FormGroup;
-  submitted = false
+export class AuthComponent implements OnInit {
+  public registered = true
+  public formGroup!: FormGroup;
+  public submitted = false
+  private _destroy$ = inject(DestroyDirective).destroy$;
 
-  @Input() formError = '';
-
-  loading$ = this.store.select(AuthFeature.selectLoading)
-  loginAgain$ = this.store.select(AuthFeature.selectLoginAgain)
+  public loading$ = this.store.select(AuthFeature.selectLoading)
+  public loginAgain$ = this.store.select(AuthFeature.selectLoginAgain)
 
   constructor(
     public auth: AuthService,
@@ -31,15 +33,12 @@ export class AuthComponent {
     private store: Store,
   ) { }
 
-  destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
   ngOnInit(): void {
     this.formInit()
 
   }
 
-  formInit() {
+  private formInit() {
     this.formGroup = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       name: new FormControl(''),
@@ -47,19 +46,15 @@ export class AuthComponent {
     });
   }
 
-  onFormChange() {
-    this.formError = '';
-  }
-
   onSubmit() {
-    if (this.formGroup.invalid || (!this.haveAcc && !this.formGroup.value.name.length)) {
+    if (this.formGroup.invalid || (!this.registered && !this.formGroup.value.name.length)) {
       return
     }
     this.store.dispatch(setLoading({ data: true }))
     this.submitted = true
     let user: IUser
 
-    if (this.haveAcc) {
+    if (this.registered) {
       user = {
         email: this.formGroup.value.email,
         password: this.formGroup.value.password
@@ -71,7 +66,8 @@ export class AuthComponent {
         name: this.formGroup.value.name,
         password: this.formGroup.value.password
       }
-      this.auth.create(user).pipe(takeUntil(this.destroy)).subscribe((response) => {
+      this.auth.create(user).pipe(takeUntil(this._destroy$),
+      ).subscribe((response) => {
         this.signIn(user)
       }, () => {
         this.submitted = false
@@ -81,7 +77,7 @@ export class AuthComponent {
   }
 
   signIn(user: IUser) {
-    this.auth.login(user).pipe(takeUntil(this.destroy)).subscribe((response) => {
+    this.auth.login(user).pipe(takeUntil(this._destroy$)).subscribe((response) => {
       this.store.dispatch(setLoading({ data: false }))
       this.store.dispatch(setUserLogin({ data: user.email }))
       this.formGroup.reset()
@@ -93,11 +89,6 @@ export class AuthComponent {
   }
 
   accStatus(haveAcc: boolean) {
-    this.haveAcc = haveAcc
-  }
-
-  ngOnDestroy() {
-    this.destroy.next(null);
-    this.destroy.complete();
+    this.registered = haveAcc
   }
 }

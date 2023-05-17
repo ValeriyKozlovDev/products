@@ -6,6 +6,7 @@ import { catchError, Observable, Subject, tap, throwError } from "rxjs";
 
 import { IUser, AuthResponse } from '../store/interfaces';
 import { setLoading } from '../store/auth.actions';
+import { environment } from "src/environments/environment";
 
 @Injectable()
 export class AuthService {
@@ -25,7 +26,7 @@ export class AuthService {
   login(user: IUser): Observable<IUser | any> {
     // user.returnSecureToken = true
     console.log(user)
-    return this.http.post(`http://localhost:5000/auth/login`, user)
+    return this.http.post(`${environment.baseUrl}/auth/login`, user)
       .pipe(
         tap(this.setToken),
         catchError(this.handleError.bind(this))
@@ -34,7 +35,7 @@ export class AuthService {
 
   create(user: IUser): Observable<IUser | any> {
     user.returnSecureToken = true
-    return this.http.post(`http://localhost:5000/auth/signup`, user)
+    return this.http.post(`${environment.baseUrl}/auth/signup`, user)
       .pipe(
         catchError(this.handleError.bind(this))
       )

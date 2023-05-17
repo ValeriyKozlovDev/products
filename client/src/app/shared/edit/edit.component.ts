@@ -1,6 +1,6 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 
@@ -13,9 +13,10 @@ import { IProduct } from '../../features/products/interfaces/products.interfaces
   selector: 'app-edit',
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss'],
-  imports: [SharedModule, CommonModule]
+  imports: [SharedModule, CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EditComponent {
+export class EditComponent implements OnInit {
   @Input() product: IProduct
   public editForm: FormGroup
   constructor(private _store: Store) { }

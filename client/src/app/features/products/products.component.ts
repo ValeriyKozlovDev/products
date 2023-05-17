@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -22,8 +22,9 @@ import { EditComponent } from 'src/app/shared/edit/edit.component';
     ProductComponent,
     EditComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductsComponent {
+export class ProductsComponent implements OnInit {
   public products$: Observable<IProduct[]> = this._store.select(ProductsFeature.selectProducts)
   constructor(private _store: Store) { }
 

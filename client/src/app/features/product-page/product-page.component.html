@@ -7,9 +7,10 @@
     </button>
     <div @fade class="item row">
       <div class="col-md-5 item__img">
-        <img src='https://pcshop.ua/image/cache/catalog/tovar/29408_2-1024x768.jpg' alt={{product.name}}>
+        <img width="200" height="400" [ngSrc]="'https://pcshop.ua/image/cache/catalog/tovar/29408_2-1024x768.jpg'"
+          alt={{product.name}}>
       </div>
-      <div class="col-md-7 item__info">
+      <div class=" col-md-7 item__info">
         <h3>{{product.name}}</h3>
         <div class="description">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non sed doloremque reiciendis
           adipisci cumque

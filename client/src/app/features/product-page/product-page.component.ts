@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -21,9 +21,10 @@ import { getFullProduct } from '../products/store/products.actions';
     CommonModule,
     SharedModule,
     EditComponent,
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductPageComponent {
+export class ProductPageComponent implements OnInit {
   public product$: Observable<IProduct> = this._store.select(ProductsFeature.selectProduct)
   product = {
     name: 'name1',

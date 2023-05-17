@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { IProduct } from '../interfaces/products.interfaces';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -14,22 +15,22 @@ export class ProductsService {
 
 
   public getAllProducts(): Observable<IProduct[]> {
-    const url = `http://localhost:5000/products`;
+    const url = `${environment.baseUrl}/products`;
     return this.http.get<IProduct[]>(url);
   }
 
   public changeProductData(product: IProduct): Observable<IProduct> {
-    const url = `http://localhost:5000/products/${product.id}`;
+    const url = `${environment.baseUrl}/products/${product.id}`;
     return this.http.put<IProduct>(url, product);
   }
 
   public createProduct(product: IProduct): Observable<IProduct> {
-    const url = `http://localhost:5000/products`;
+    const url = `${environment.baseUrl}/products`;
     return this.http.post<IProduct>(url, product);
   }
 
   public deleteProduct(id: number): Observable<string> {
-    const url = `http://localhost:5000/products/${id}`;
+    const url = `${environment.baseUrl}/products/${id}`;
     return this.http.delete<string>(url);
   }
 }
