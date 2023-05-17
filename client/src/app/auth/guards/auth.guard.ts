@@ -7,7 +7,9 @@ import { Store } from '@ngrx/store';
 import { AuthService } from '../services/auth.service';
 import { changeAccessFlag } from '../store/auth.actions';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthGuard implements CanActivate {
   constructor(
     private _auth: AuthService,

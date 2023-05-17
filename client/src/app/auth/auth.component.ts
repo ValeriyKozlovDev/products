@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { setLoading, setUserLogin } from './store/auth.actions';
+import { login, setLoading, setUserLogin } from './store/auth.actions';
 import { AuthService } from './services/auth.service';
 import { DestroyDirective } from '../shared/directives/destroy.directive';
 import { SharedModule } from '../shared/shared.module';
@@ -62,6 +62,7 @@ export class AuthComponent implements OnInit {
   }
 
   private _signIn(user: IUser): void {
+    // this._store.dispatch(login({ data: user }))
     this.auth.login(user).pipe(takeUntil(this._destroy$)).subscribe((response) => {
       this._store.dispatch(setLoading({ data: false }))
       this._store.dispatch(setUserLogin({ data: user.email }))
@@ -111,7 +112,7 @@ export class AuthComponent implements OnInit {
     }
   }
 
-  public accStatus(registered: boolean): void {
+  public changeRegistered(registered: boolean): void {
     this.registered = registered
   }
 }
