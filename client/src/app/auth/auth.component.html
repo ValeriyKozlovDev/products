@@ -1,10 +1,10 @@
 <div class="container">
 
   <div class="form">
-    <form [formGroup]="formGroup" class="login-form" (input)="onFormChange()" (ngSubmit)="onSubmit()">
+    <form [formGroup]="formGroup" class="login-form" (ngSubmit)="onSubmit()">
       <div class="login-form__title">
-        <h1 *ngIf="haveAcc">Log in</h1>
-        <h1 *ngIf="!haveAcc">Create Account</h1>
+        <h1 *ngIf="registered">Log in</h1>
+        <h1 *ngIf="!registered">Create Account</h1>
       </div>
       <div class="form__warning">
         <mat-card *ngIf="loginAgain$ | async">
@@ -24,8 +24,8 @@
           Email is not <strong>required</strong>
         </mat-error>
       </mat-form-field>
-      <hr *ngIf="!haveAcc">
-      <mat-form-field *ngIf="!haveAcc" class="login-form__input-control">
+      <hr *ngIf="!registered">
+      <mat-form-field *ngIf="!registered" class="login-form__input-control">
         <mat-label>Name</mat-label>
         <input matInput formControlName="name">
         <mat-error *ngIf="formGroup.hasError('required', 'name')">
@@ -45,17 +45,16 @@
       </mat-form-field>
 
       <div class="login-form__input-control">
-        <button *ngIf="haveAcc===true" mat-raised-button color="primary"
-          [disabled]="formGroup.invalid || !!formError || submitted" class="login-form__submit">Log in</button>
-        <button *ngIf="haveAcc===false" mat-raised-button color="primary"
-          [disabled]="formGroup.invalid || !!formError || submitted" class="login-form__submit">Sing Up</button>
-        <mat-error *ngIf="formError">{{formError}}</mat-error>
+        <button *ngIf="registered" mat-raised-button color="primary" [disabled]="formGroup.invalid || submitted"
+          class="login-form__submit">Log in</button>
+        <button *ngIf="!registered" mat-raised-button color="primary" [disabled]="formGroup.invalid || submitted"
+          class="login-form__submit">Sing Up</button>
       </div>
       <div class="toggle">
-        <span *ngIf="haveAcc" class="text">If you haven't account please</span>
-        <button *ngIf="haveAcc" mat-raised-button (click)="accStatus(false)">Sing Up</button>
-        <span *ngIf="!haveAcc" class="text">If you have account please</span>
-        <button *ngIf="!haveAcc" mat-raised-button (click)="accStatus(true)">Sign In</button>
+        <span *ngIf="registered" class="text">If you haven't account please</span>
+        <button *ngIf="registered" mat-raised-button (click)="accStatus(false)">Sing Up</button>
+        <span *ngIf="!registered" class="text">If you have account please</span>
+        <button *ngIf="!registered" mat-raised-button (click)="accStatus(true)">Sign In</button>
       </div>
     </form>
   </div>

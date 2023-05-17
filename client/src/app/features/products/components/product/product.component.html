@@ -1,10 +1,10 @@
 <div [routerLink]="['../product/' + product.id]">
   <div>
-    <img class="product_img" src="https://pcshop.ua/image/cache/catalog/tovar/29408_2-1024x768.jpg"
-      alt="{{ product.name }}">
+    <img class="product_img" width="100" height="180"
+      [ngSrc]="'https://pcshop.ua/image/cache/catalog/tovar/29408_2-1024x768.jpg'" alt="{{ product.name }}">
   </div>
   <div>
-    <h3>{{ product.name }}</h3>
+    <h3>Name: <strong>{{ product.name }}</strong></h3>
   </div>
   <div>
     <p>Price: {{ product.price }}$</p>
