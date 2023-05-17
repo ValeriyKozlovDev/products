@@ -14,14 +14,22 @@ import {
   getAllProducts,
   getAllProductsFailed,
   getAllProductsSuccess,
+  getFullProduct,
 } from './products.actions';
+import { IProduct } from '../interfaces/products.interfaces';
 
 export const products = 'products';
 
 export const productsInitialState: IProductsState = {
   isLoading: false,
   products: [],
-  product: null,
+  product: {
+    name: '',
+    description: '',
+    image: '',
+    id: 0,
+    price: 0
+  },
   error: null,
 };
 
@@ -29,6 +37,10 @@ export const ProductsFeature = createFeature({
   name: products,
   reducer: createReducer(
     productsInitialState,
+    on(getFullProduct, (state: IProductsState, { id }) => ({
+      ...state,
+      product: (state.products.find(product => product.id == id)) as IProduct
+    })),
     on(getAllProducts, (state: IProductsState) => ({
       ...state,
       error: null,
@@ -68,6 +80,7 @@ export const ProductsFeature = createFeature({
     })),
     on(createProductSuccess, (state: IProductsState, { response }) => ({
       ...state,
+      products: [...state.products, response],
       product: response,
       isLoading: false,
     })),
@@ -77,14 +90,15 @@ export const ProductsFeature = createFeature({
       isLoading: false,
     })),
 
-    on(deleteProduct, (state: IProductsState) => ({
+    on(deleteProduct, (state: IProductsState, { data }) => ({
       ...state,
+      product: (state.products.find((product) => product.id == data)) as IProduct,
       error: null,
       isLoading: true,
     })),
     on(deleteProductSuccess, (state: IProductsState, { response }) => ({
       ...state,
-      product: response,
+      products: state.products.filter((product) => product.id != state.product.id),
       isLoading: false,
     })),
     on(deleteProductFailed, (state: IProductsState, { error }) => ({

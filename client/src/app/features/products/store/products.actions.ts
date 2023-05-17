@@ -3,7 +3,11 @@ import { createAction, props } from '@ngrx/store';
 
 import { ProfileActions } from './products.action.enum';
 
-export const changeProductData = createAction(ProfileActions.CHANGE_PRODUCT_DATA);
+export const changeProductData = createAction(
+  ProfileActions.CHANGE_PRODUCT_DATA,
+  props<{ data: IProduct }>(),
+
+);
 
 export const changeProductDataSuccess = createAction(
   ProfileActions.CHANGE_PRODUCT_DATA_SUCCESS,
@@ -32,16 +36,16 @@ export const createProductFailed = createAction(
 
 export const deleteProduct = createAction(
   ProfileActions.DELETE_PRODUCT,
-  props<{ data: IProduct }>(),
+  props<{ data: number }>(),
 );
 
 export const deleteProductSuccess = createAction(
-  ProfileActions.CREATE_PRODUCT_SUCCESS,
-  props<{ response: IProduct }>(),
+  ProfileActions.DELETE_PRODUCT_SUCCESS,
+  props<{ response: string }>(),
 );
 
 export const deleteProductFailed = createAction(
-  ProfileActions.CREATE_PRODUCT_FAILED,
+  ProfileActions.DELETE_PRODUCT_FAILED,
   props<{ error: IErrors }>(),
 );
 
@@ -61,7 +65,7 @@ export const getAllProductsFailed = createAction(
 
 export const getFullProduct = createAction(
   ProfileActions.GET_FULL_PRODUCT,
-  props<{ data: IProduct }>(),
+  props<{ id: number }>(),
 );
 
 export const getFullProductSuccess = createAction(

@@ -1,11 +1,38 @@
-<div class="product-container">
-  <div class="product-image">
-    <img [src]="product.image" alt="{{ product.name }}">
+<ng-container *ngIf="product$ | async as product">
+
+  <div class="container">
+    <button mat-button [matMenuTriggerFor]="edit">
+      Edit product
+      <mat-icon>keyboard_arrow_down</mat-icon>
+    </button>
+    <div @fade class="item row">
+      <div class="col-md-5 item__img">
+        <img src='https://pcshop.ua/image/cache/catalog/tovar/29408_2-1024x768.jpg' alt={{product.name}}>
+      </div>
+      <div class="col-md-7 item__info">
+        <h3>{{product.name}}</h3>
+        <div class="description">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non sed doloremque reiciendis
+          adipisci cumque
+          odit harum vitae nostrum fugit. Fuga consequuntur placeat omnis odit deleniti quos perferendis. Alias, magnam
+          voluptas.</div>
+        <div class="row">
+          <p class="col-6 col-sm-4 col-md-2 product-info__option-name"></p>
+          <p class="col-6 col-sm-6 col-md-8 product-info__info-text">{{product.description}}</p>
+        </div>
+        <div class="row">
+          <p class="col-6 col-sm-4 col-md-2 product-info__option-name">Year:</p>
+          <p class="col-6 col-sm-6 col-md-10 product-info__info-text">2021</p>
+        </div>
+        <div class="buy row">
+          <div class="col-6 col-sm-6 col-md-3 offset-md-1 buy__price">{{product.price}} USD</div>
+          <div class="col-6 col-sm-6 col-md-4 offset-md-2">
+            <button class="buy__button" type="submit">+ Add to cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="product-details">
-    <h2>{{ product.name }}</h2>
-    <p>{{ product.description }}</p>
-    <h3>{{ product.price }}</h3>
-    <button mat-raised-button color="primary">Add to Cart</button>
-  </div>
-</div>
+  <mat-menu #edit="matMenu">
+    <app-edit (click)="$event.stopPropagation()" [product]="product"></app-edit>
+  </mat-menu>
+</ng-container>

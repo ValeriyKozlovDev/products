@@ -1,10 +1,5 @@
 <div class="container">
-  <div class="toggle">
-    <span *ngIf="haveAcc" class="text">If you haven't account please</span>
-    <button *ngIf="haveAcc" mat-raised-button (click)="accStatus(false)">Sing Up</button>
-    <span *ngIf="!haveAcc" class="text">If you have account please</span>
-    <button *ngIf="!haveAcc" mat-raised-button (click)="accStatus(true)">Sign In</button>
-  </div>
+
   <div class="form">
     <form [formGroup]="formGroup" class="login-form" (input)="onFormChange()" (ngSubmit)="onSubmit()">
       <div class="login-form__title">
@@ -55,6 +50,12 @@
         <button *ngIf="haveAcc===false" mat-raised-button color="primary"
           [disabled]="formGroup.invalid || !!formError || submitted" class="login-form__submit">Sing Up</button>
         <mat-error *ngIf="formError">{{formError}}</mat-error>
+      </div>
+      <div class="toggle">
+        <span *ngIf="haveAcc" class="text">If you haven't account please</span>
+        <button *ngIf="haveAcc" mat-raised-button (click)="accStatus(false)">Sing Up</button>
+        <span *ngIf="!haveAcc" class="text">If you have account please</span>
+        <button *ngIf="!haveAcc" mat-raised-button (click)="accStatus(true)">Sign In</button>
       </div>
     </form>
   </div>

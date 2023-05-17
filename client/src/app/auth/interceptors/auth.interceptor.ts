@@ -11,7 +11,7 @@ import {
   HttpHeaders,
 
 } from "@angular/common/http";
-import { catchError, Observable, tap, throwError } from "rxjs";
+import { catchError, Observable, throwError } from "rxjs";
 import { AuthService } from '../services/auth.service';
 
 @Injectable()
@@ -31,12 +31,8 @@ export class AuthInterceptor implements HttpInterceptor {
         authorization: `${clearToken}`,
         'Content-Type': 'application/json',
       });
-      // req = req.clone({
-      //   new HttpHeaders({
-      //     authorization: `${clearToken}`,
-      //     'Content-Type': 'application/json',
-      //   });
-      // })
+      const authReq = req.clone({ headers });
+      return next.handle(authReq);
     }
     return next.handle(req)
       .pipe(
@@ -52,27 +48,3 @@ export class AuthInterceptor implements HttpInterceptor {
       )
   }
 }
-// import { Injectable } from '@angular/core';
-// import {
-//   HttpRequest,
-//   HttpHandler,
-//   HttpEvent,
-//   HttpInterceptor,
-//   HttpHeaders,
-// } from '@angular/common/http';
-
-// import { Observable } from 'rxjs';
-
-// @Injectable()
-// export class AuthInterceptor<T> implements HttpInterceptor {
-//   intercept(req: HttpRequest<T>, next: HttpHandler): Observable<HttpEvent<T>> {
-//     const token = localStorage.getItem('token');
-//     const clearToken = token?.replace(/"/g, '');
-//     const headers = new HttpHeaders({
-//       authorization: `${clearToken}`,
-//       'Content-Type': 'application/json',
-//     });
-//     const authReq = req.clone({ headers });
-//     return next.handle(authReq);
-//   }
-// }

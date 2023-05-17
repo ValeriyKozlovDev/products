@@ -1,6 +1,7 @@
-<div [routerLink]="['../product/1']">
+<div [routerLink]="['../product/' + product.id]">
   <div>
-    <img class="product_img" [src]="product.image" alt="{{ product.name }}">
+    <img class="product_img" src="https://pcshop.ua/image/cache/catalog/tovar/29408_2-1024x768.jpg"
+      alt="{{ product.name }}">
   </div>
   <div>
     <h3>{{ product.name }}</h3>
@@ -8,5 +9,4 @@
   <div>
     <p>Price: {{ product.price }}$</p>
   </div>
-
 </div>
