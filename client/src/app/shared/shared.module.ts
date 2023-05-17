@@ -1,3 +1,4 @@
+import { MatCardModule } from '@angular/material/card';
 import { NgModule } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -29,6 +30,7 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     RouterModule,
     NgOptimizedImage,
+    MatCardModule
   ],
   exports: [
     MatToolbarModule,
@@ -43,7 +45,8 @@ import { RouterModule } from '@angular/router';
     ReactiveFormsModule,
     FormsModule,
     RouterModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    MatCardModule
   ]
 })
 export class SharedModule { }

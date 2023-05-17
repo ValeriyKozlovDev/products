@@ -24,9 +24,9 @@ const routes: Routes = [
   },
   {
     path: 'auth',
-    loadChildren: () =>
-      import('./auth/auth.module').then(
-        (module) => module.AuthModule,
+    loadComponent: () =>
+      import('./auth/auth.component').then(
+        (module) => module.AuthComponent,
       ),
   },
 ];
