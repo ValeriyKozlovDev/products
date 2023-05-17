@@ -13,7 +13,6 @@
           </mat-card-content>
         </mat-card>
       </div>
-      <mat-error *ngIf="auth.error$ | async as error">{{error}}</mat-error>
       <app-text-input [value]="formGroup.value.email" [label]="'Email'" formControlName="email"></app-text-input>
 
       <!-- <mat-form-field class="login-form__input-control">

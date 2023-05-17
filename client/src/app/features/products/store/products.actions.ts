@@ -53,6 +53,10 @@ export const getAllProducts = createAction(
   ProfileActions.GET_ALL_PRODUCTS,
 );
 
+export const resetProducts = createAction(
+  ProfileActions.RESET_PRODUCTS,
+);
+
 export const getAllProductsSuccess = createAction(
   ProfileActions.GET_ALL_PRODUCTS_SUCCESS,
   props<{ response: IProduct[] }>(),

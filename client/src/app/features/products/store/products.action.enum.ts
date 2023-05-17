@@ -14,6 +14,7 @@ export enum ProfileActions {
   CREATE_PRODUCT = '[Products] Create product',
   CREATE_PRODUCT_SUCCESS = '[Products] Create product success',
   CREATE_PRODUCT_FAILED = '[Products] Create product failed',
+  RESET_PRODUCTS = '[Products] Reset product',
 
 
 }

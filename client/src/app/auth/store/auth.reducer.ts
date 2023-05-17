@@ -1,6 +1,6 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 
-import { changeAccessFlag, login, setLoading, setUserLogin } from './auth.actions';
+import { changeAccessFlag, login, loginOrRegisterFailure, loginOrRegisterSuccess, logout, register, setLoading, setUserLogin } from './auth.actions';
 import { IAuthInitialState } from './interfaces';
 
 export const auth = 'auth';
@@ -30,6 +30,23 @@ export const AuthFeature = createFeature({
     on(login, (state: IAuthInitialState, { data }) => ({
       ...state,
       loading: true
+    })),
+    on(register, (state: IAuthInitialState, { user }) => ({
+      ...state,
+      loading: true
+    })),
+    on(loginOrRegisterSuccess, (state: IAuthInitialState, { user, token }) => ({
+      ...state,
+      loading: false,
+      userLogin: user.email
+    })),
+    on(loginOrRegisterFailure, (state: IAuthInitialState, { errors }) => ({
+      ...state,
+      loginAgain: true,
+    })),
+    on(logout, (state: IAuthInitialState) => ({
+      ...state,
+      loginAgain: true,
     })),
   )
 })

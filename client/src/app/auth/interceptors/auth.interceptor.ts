@@ -1,5 +1,5 @@
 import { Store } from '@ngrx/store';
-import { changeAccessFlag } from './../store/auth.actions';
+import { changeAccessFlag, logout } from './../store/auth.actions';
 import { Injectable } from "@angular/core";
 import { Router } from '@angular/router';
 import {
@@ -25,7 +25,7 @@ export class AuthInterceptor implements HttpInterceptor {
   ) { }
 
   public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (this._auth.isAuthenticated()) {
+    if (!!localStorage.getItem('token')) {
       const token = localStorage.getItem('token');
       const headers = new HttpHeaders({
         authorization: `${token}`,
@@ -39,7 +39,7 @@ export class AuthInterceptor implements HttpInterceptor {
           console.warn('[Interceptor error]', error)
           if (error.status === 401) {
             this._store.dispatch(changeAccessFlag({ data: true }))
-            this._auth.logout()
+            this._store.dispatch(logout())
             this._router.navigate(['/auth'])
           }
           return throwError(error)
