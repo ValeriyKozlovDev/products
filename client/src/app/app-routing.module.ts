@@ -8,17 +8,17 @@ const routes: Routes = [
 
   {
     path: 'products',
-    loadChildren: () =>
-      import('./features/products/products.module').then(
-        (module) => module.ProductsModule,
+    loadComponent: () =>
+      import('./features/products/products.component').then(
+        (module) => module.ProductsComponent,
       ),
     canActivate: [AuthGuard],
   },
   {
-    path: 'product',
-    loadChildren: () =>
-      import('./features/product-page/product-page.module').then(
-        (module) => module.ProductPageModule,
+    path: 'product/:productId',
+    loadComponent: () =>
+      import('./features/product-page/product-page.component').then(
+        (module) => module.ProductPageComponent,
       ),
     canActivate: [AuthGuard],
   },

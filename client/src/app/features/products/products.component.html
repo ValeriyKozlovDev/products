@@ -1,7 +1,15 @@
-<div class="products-container">
+<div *ngIf="products$ | async as products" class="products-container">
+  <button mat-button [matMenuTriggerFor]="add">
+    Add new product
+    <mat-icon>keyboard_arrow_down</mat-icon>
+  </button>
   <mat-grid-list cols="4" rowHeight="1:1">
     <mat-grid-tile *ngFor="let product of products">
       <app-product [product]="product"></app-product>
+      <mat-icon (click)="deleteProduct(product.id!)">delete</mat-icon>
     </mat-grid-tile>
   </mat-grid-list>
+  <mat-menu #add="matMenu">
+    <app-edit (click)="$event.stopPropagation()"></app-edit>
+  </mat-menu>
 </div>

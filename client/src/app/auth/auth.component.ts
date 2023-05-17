@@ -1,12 +1,14 @@
-import { IUser } from './store/interfaces';
-import { setLoading, setUserLogin } from './store/auth.actions';
-import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
-import { AuthService } from './services/auth.service';
-import { selectLoading, selectLoginAgain } from './store/auth.selectors';
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { Store } from '@ngrx/store';
 import { ReplaySubject, takeUntil } from 'rxjs';
+
+import { AuthFeature } from './store/auth.reducer';
+import { IUser } from './store/interfaces';
+import { setLoading, setUserLogin } from './store/auth.actions';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-auth',
@@ -20,8 +22,8 @@ export class AuthComponent {
 
   @Input() formError = '';
 
-  loading$ = this.store.select(selectLoading)
-  loginAgain$ = this.store.select(selectLoginAgain)
+  loading$ = this.store.select(AuthFeature.selectLoading)
+  loginAgain$ = this.store.select(AuthFeature.selectLoginAgain)
 
   constructor(
     public auth: AuthService,

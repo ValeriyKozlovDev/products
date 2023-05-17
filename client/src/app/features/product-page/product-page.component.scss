@@ -5,15 +5,53 @@
   justify-content: center;
 }
 
-.product-image {
-  flex-basis: 50%;
+
+.item {
+  margin-top: 30px;
 }
 
-.product-image img {
-  max-width: 100%;
+.item__img {
+
+  >img {
+    width: 100%;
+    border-radius: 12px;
+  }
 }
 
-.product-details {
-  flex-basis: 50%;
-  padding: 0 20px;
+.item__info {
+
+  >h3 {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 140%;
+    color: #151515;
+  }
+}
+
+.description {
+  margin: 20px 0px;
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 23px;
+  color: #151515;
+}
+
+.buy__price {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 39px;
+  color: #6A983C;
+}
+
+@media (max-width: 768px) {
+
+  .description {
+    font-size: 13px;
+  }
 }

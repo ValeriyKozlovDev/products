@@ -1,4 +1,4 @@
-export interface AuthState {
+export interface IAuthInitialState {
   loginAgain: boolean,
   loading: boolean,
   userLogin: string

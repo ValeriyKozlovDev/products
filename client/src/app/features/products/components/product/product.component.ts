@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { SharedModule } from '../../../../shared/shared.module';
+import { IProduct } from '../../interfaces/products.interfaces';
 
 @Component({
   standalone: true,
@@ -11,5 +12,6 @@ import { SharedModule } from '../../../../shared/shared.module';
   imports: [SharedModule, RouterModule],
 })
 export class ProductComponent {
-  @Input() product: any
+  @Input() product: IProduct
+
 }
