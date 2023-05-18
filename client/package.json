@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build:win": "(if exist ..\\server\\front rmdir ..\\server\\front /s /q) && ng build && move dist/client ..\\server\\front",
+    "build:linux": "rm -rf ../server/front && mkdir ../server/front && ng build && mv dist/client/* ../server/front/"
   },
   "private": true,
   "dependencies": {
