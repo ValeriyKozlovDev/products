@@ -1,23 +1,20 @@
-import { Router } from '@angular/router';
-import { ChangeDetectionStrategy, Component, Input, OnInit, inject, Provider } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, Provider } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
-import { Store } from '@ngrx/store';
-import { ReplaySubject, takeUntil } from 'rxjs';
-
-import { AuthFeature } from './store/auth.reducer';
-import { IUser } from './store/interfaces';
-
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
+import { Store } from '@ngrx/store';
+
+import { AuthFeature } from './store/auth.reducer';
+import { IUser } from './store/interfaces';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { login, setLoading, setUserLogin } from './store/auth.actions';
+import { login, register } from './store/auth.actions';
 import { AuthService } from './services/auth.service';
 import { DestroyDirective } from '../shared/directives/destroy.directive';
 import { SharedModule } from '../shared/shared.module';
 import { TextInputComponent } from '../shared/text-input/text-input.component';
 import { AuthGuard } from './guards/auth.guard';
+
 const INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
   multi: true,
@@ -43,7 +40,6 @@ const INTERCEPTOR_PROVIDER: Provider = {
   hostDirectives: [DestroyDirective],
 })
 export class AuthComponent implements OnInit {
-  private _destroy$ = inject(DestroyDirective).destroy$;
 
   public registered = true
   public formGroup!: FormGroup;
@@ -53,7 +49,6 @@ export class AuthComponent implements OnInit {
 
   constructor(
     public auth: AuthService,
-    private _router: Router,
     private _store: Store,
   ) { }
 
@@ -62,16 +57,9 @@ export class AuthComponent implements OnInit {
   }
 
   private _signIn(user: IUser): void {
-    // this._store.dispatch(login({ data: user }))
-    this.auth.login(user).pipe(takeUntil(this._destroy$)).subscribe((response) => {
-      this._store.dispatch(setLoading({ data: false }))
-      this._store.dispatch(setUserLogin({ data: user.email }))
-      this.formGroup.reset()
-      this._router.navigate(['/products'])
-    }, () => {
-      this.submitted = false
-    }
-    )
+    this._store.dispatch(login({ data: user }))
+    this.formGroup.reset()
+    this.submitted = false
   }
 
   private formInit(): void {
@@ -86,7 +74,6 @@ export class AuthComponent implements OnInit {
     if (this.formGroup.invalid || (!this.registered && !this.formGroup.value.name.length)) {
       return
     }
-    this._store.dispatch(setLoading({ data: true }))
     this.submitted = true
     let user: IUser
 
@@ -102,13 +89,8 @@ export class AuthComponent implements OnInit {
         name: this.formGroup.value.name,
         password: this.formGroup.value.password
       }
-      this.auth.create(user).pipe(takeUntil(this._destroy$),
-      ).subscribe((response) => {
-        this._signIn(user)
-      }, () => {
-        this.submitted = false
-      }
-      )
+      this._store.dispatch(register({ user: user }))
+      this.submitted = false
     }
   }
 

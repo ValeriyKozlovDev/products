@@ -1,38 +1,81 @@
-// import { Actions, createEffect, ofType } from "@ngrx/effects";
-// import { login } from './auth.actions';
-// import { AuthService } from "../services/auth.service";
-// import { exhaustMap, mergeMap } from "rxjs";
+import { inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
-// export class AuthEffects {
-//   login$ = createEffect(() => {
-//     return this.actions$.pipe(
-//       ofType(login),
-//       exhaustMap(({ user }) => this.authService.login(user)),
-//     )
-//   })
+import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { Store } from '@ngrx/store';
+import { exhaustMap, map, tap, catchError, of } from "rxjs";
+import jwtDecode from 'jwt-decode';
 
+import { login, loginOrRegisterFailure, loginOrRegisterSuccess, logout, register } from './auth.actions';
+import { AuthService } from "../services/auth.service";
+import { IUser } from './interfaces';
+import { resetProducts } from '../../features/products/store/products.actions';
 
+export const auth$ = createEffect(
+  (
+    actions$ = inject(Actions),
+    authService: AuthService = inject(AuthService),
+  ) =>
+    actions$.pipe(
+      ofType(login),
+      exhaustMap(({ data }) => authService.login(data)),
+      tap((token) => localStorage.setItem('token', token.token)),
+      map(({ token }) => {
+        const user: IUser = jwtDecode(token);
+        return loginOrRegisterSuccess({ user, token });
+      }),
+    ),
 
-//   constructor(
-//     private actions$: Actions,
-//     private authService: AuthService,
-//   ) { }
-// }
+  { functional: true },
+)
 
-// getAllProducts$ = createEffect(() => {
-//   return this.actions$.pipe(
-//     ofType(getAllProducts),
-//     mergeMap(() =>
-//       this.productsService.getAllProducts().pipe(
-//         map((response) => {
-//           return getAllProductsSuccess({
-//             response,
-//           });
-//         }),
-//         catchError((errorRes: HttpErrorResponse) =>
-//           of(getAllProductsFailed({ error: errorRes.error?.errors })),
-//         ),
-//       ),
-//     ),
-//   );
-// });
+export const loginOrRegisterSuccess$ = createEffect(
+  (actions$ = inject(Actions), router = inject(Router)) =>
+    actions$.pipe(
+      ofType(loginOrRegisterSuccess),
+      tap(() => {
+        if (router.url.includes('auth')) {
+          router.navigateByUrl('/products');
+        }
+      }),
+    ),
+  { functional: true, dispatch: false },
+);
+
+export const register$ = createEffect(
+  (
+    actions$ = inject(Actions),
+    authService: AuthService = inject(AuthService),
+  ) =>
+    actions$.pipe(
+      ofType(register),
+      exhaustMap(({ user }) => authService.create(user)),
+      tap((token) => localStorage.setItem('token', token.token)),
+      map(({ token }) => {
+        const user: IUser = jwtDecode(token);
+        return loginOrRegisterSuccess({ user, token });
+      }),
+      catchError((errorRes: HttpErrorResponse) =>
+        of(loginOrRegisterFailure({ errors: errorRes.error?.errors })),
+      ),
+    ),
+  { functional: true },
+);
+
+export const logout$ = createEffect(
+  (
+    actions$ = inject(Actions),
+    router = inject(Router),
+    store = inject(Store),
+  ) =>
+    actions$.pipe(
+      ofType(logout),
+      tap(() => {
+        localStorage.clear();
+        store.dispatch(resetProducts());
+        router.navigate(['/auth']);
+      }),
+    ),
+  { functional: true, dispatch: false },
+);

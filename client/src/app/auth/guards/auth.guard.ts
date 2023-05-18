@@ -5,7 +5,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Store } from '@ngrx/store';
 
 import { AuthService } from '../services/auth.service';
-import { changeAccessFlag } from '../store/auth.actions';
+import { changeAccessFlag, logout } from '../store/auth.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -21,13 +21,14 @@ export class AuthGuard implements CanActivate {
 
   private _isAuthenticated(): boolean {
     const token: string = localStorage.getItem('token') || '';
+    console.log(localStorage.getItem('token'))
     return !this._jwtHelper.isTokenExpired(token!);
   }
 
   public canActivate(): boolean {
     if (!this._isAuthenticated()) {
       this._store.dispatch(changeAccessFlag({ data: true }))
-      this._auth.logout()
+      this._store.dispatch(logout())
       this._router.navigate(['/auth'])
       return false;
     }

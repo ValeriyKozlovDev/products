@@ -9,7 +9,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { EditComponent } from '../../shared/edit/edit.component';
 import { IProduct } from '../products/interfaces/products.interfaces';
 import { ProductsFeature } from '../products/store/products.reducer';
-import { getAllProducts, getFullProduct } from '../products/store/products.actions';
+import { getFullProduct } from '../products/store/products.actions';
 
 @Component({
   standalone: true,

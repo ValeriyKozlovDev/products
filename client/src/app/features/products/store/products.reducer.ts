@@ -15,6 +15,7 @@ import {
   getAllProductsFailed,
   getAllProductsSuccess,
   getFullProduct,
+  resetProducts,
 } from './products.actions';
 import { IProduct } from '../interfaces/products.interfaces';
 
@@ -56,7 +57,6 @@ export const ProductsFeature = createFeature({
       error: error,
       isLoading: false,
     })),
-
     on(changeProductData, (state: IProductsState) => ({
       ...state,
       error: null,
@@ -105,6 +105,17 @@ export const ProductsFeature = createFeature({
       ...state,
       error: error,
       isLoading: false,
+    })),
+    on(resetProducts, (state: IProductsState) => ({
+      ...state,
+      products: [],
+      product: {
+        name: '',
+        description: '',
+        image: '',
+        id: 0,
+        price: 0
+      }
     })),
   ),
 });

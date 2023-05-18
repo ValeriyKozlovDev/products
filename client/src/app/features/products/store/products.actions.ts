@@ -1,7 +1,7 @@
-import { IProduct, IErrors } from './../interfaces/products.interfaces';
 import { createAction, props } from '@ngrx/store';
 
 import { ProfileActions } from './products.action.enum';
+import { IProduct, IErrors } from '../interfaces/products.interfaces';
 
 export const changeProductData = createAction(
   ProfileActions.CHANGE_PRODUCT_DATA,
@@ -51,6 +51,10 @@ export const deleteProductFailed = createAction(
 
 export const getAllProducts = createAction(
   ProfileActions.GET_ALL_PRODUCTS,
+);
+
+export const resetProducts = createAction(
+  ProfileActions.RESET_PRODUCTS,
 );
 
 export const getAllProductsSuccess = createAction(

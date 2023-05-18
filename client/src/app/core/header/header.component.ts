@@ -1,8 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Store } from '@ngrx/store';
+
 import { SharedModule } from '../../shared/shared.module';
 import { AuthService } from '../../auth/services/auth.service';
+import { logout } from '../../auth/store/auth.actions';
 
 @Component({
   standalone: true,
@@ -16,11 +19,11 @@ export class HeaderComponent {
 
   constructor(
     private _auth: AuthService,
+    private _store: Store,
     private _router: Router,
   ) { }
 
   public logout(): void {
-    this._auth.logout()
-    this._router.navigate(['auth'])
+    this._store.dispatch(logout())
   }
 }

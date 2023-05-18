@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -6,10 +7,10 @@ import {
   Self,
   Optional
 } from '@angular/core';
-import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { AbstractControl, ControlValueAccessor, NgControl, ValidationErrors } from '@angular/forms';
+
 import { BaseField } from '../directives/base-field.directive';
 import { SharedModule } from '../shared.module';
-import { CommonModule } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -59,6 +60,13 @@ export class TextInputComponent implements ControlValueAccessor, BaseField {
 
   public registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
+  }
+
+  validate(control: AbstractControl): ValidationErrors | null {
+    if (!this.value) {
+      return { required: true };
+    }
+    return null;
   }
 }
 

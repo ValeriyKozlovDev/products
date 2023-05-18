@@ -1,5 +1,4 @@
-
-import { Injectable } from '@angular/core';
+import { inject } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -20,16 +19,16 @@ import {
   deleteProductSuccess,
   deleteProductFailed
 } from './products.actions';
-@Injectable({
-  providedIn: 'root',
-})
-export class ProductsEffects {
 
-  getAllProducts$ = createEffect(() => {
-    return this.actions$.pipe(
+export const getAllProducts$ = createEffect(
+  (
+    actions$ = inject(Actions),
+    productsService: ProductsService = inject(ProductsService),
+  ) =>
+    actions$.pipe(
       ofType(getAllProducts),
       mergeMap(() =>
-        this.productsService.getAllProducts().pipe(
+        productsService.getAllProducts().pipe(
           map((response) => {
             return getAllProductsSuccess({
               response,
@@ -39,15 +38,21 @@ export class ProductsEffects {
             of(getAllProductsFailed({ error: errorRes.error?.errors })),
           ),
         ),
-      ),
-    );
-  });
+      )
+    ),
 
-  createProduct$ = createEffect(() => {
-    return this.actions$.pipe(
+  { functional: true },
+)
+
+export const createProduct$ = createEffect(
+  (
+    actions$ = inject(Actions),
+    productsService: ProductsService = inject(ProductsService),
+  ) =>
+    actions$.pipe(
       ofType(createProduct),
       mergeMap(({ data }) =>
-        this.productsService.createProduct(data).pipe(
+        productsService.createProduct(data).pipe(
           map((response) => {
             return createProductSuccess({
               response,
@@ -57,15 +62,21 @@ export class ProductsEffects {
             of(createProductFailed({ error: errorRes.error?.errors })),
           ),
         ),
-      ),
-    );
-  });
+      )
+    ),
 
-  deleteProduct$ = createEffect(() => {
-    return this.actions$.pipe(
+  { functional: true },
+)
+
+export const deleteProduct$ = createEffect(
+  (
+    actions$ = inject(Actions),
+    productsService: ProductsService = inject(ProductsService),
+  ) =>
+    actions$.pipe(
       ofType(deleteProduct),
       mergeMap(({ data }) =>
-        this.productsService.deleteProduct(data).pipe(
+        productsService.deleteProduct(data).pipe(
           map((response) => {
             return deleteProductSuccess({
               response,
@@ -75,15 +86,21 @@ export class ProductsEffects {
             of(deleteProductFailed({ error: errorRes.error?.errors })),
           ),
         ),
-      ),
-    );
-  });
+      )
+    ),
 
-  changeProductData$ = createEffect(() => {
-    return this.actions$.pipe(
+  { functional: true },
+)
+
+export const changeProductData$ = createEffect(
+  (
+    actions$ = inject(Actions),
+    productsService: ProductsService = inject(ProductsService),
+  ) =>
+    actions$.pipe(
       ofType(changeProductData),
       mergeMap(({ data }) =>
-        this.productsService.changeProductData(data).pipe(
+        productsService.changeProductData(data).pipe(
           map((response) => {
             return changeProductDataSuccess({
               response,
@@ -93,13 +110,8 @@ export class ProductsEffects {
             of(changeProductDataFailed({ error: errorRes.error?.errors })),
           ),
         ),
-      ),
-    );
-  });
+      )
+    ),
 
-
-  constructor(
-    private actions$: Actions,
-    private productsService: ProductsService,
-  ) { }
-}
+  { functional: true },
+)
