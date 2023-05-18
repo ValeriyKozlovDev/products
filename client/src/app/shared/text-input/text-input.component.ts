@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -7,9 +8,9 @@ import {
   Optional
 } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgControl, ValidationErrors } from '@angular/forms';
+
 import { BaseField } from '../directives/base-field.directive';
 import { SharedModule } from '../shared.module';
-import { CommonModule } from '@angular/common';
 
 @Component({
   standalone: true,

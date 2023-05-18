@@ -1,5 +1,3 @@
-import { Store } from '@ngrx/store';
-import { changeAccessFlag, logout } from './../store/auth.actions';
 import { Injectable } from "@angular/core";
 import { Router } from '@angular/router';
 import {
@@ -10,8 +8,12 @@ import {
   HttpInterceptor,
   HttpRequest
 } from "@angular/common/http";
-import { catchError, Observable, tap, throwError } from "rxjs";
+
+import { catchError, Observable, throwError } from "rxjs";
+import { Store } from '@ngrx/store';
+
 import { AuthService } from '../services/auth.service';
+import { changeAccessFlag, logout } from '../store/auth.actions';
 
 @Injectable({
   providedIn: 'root',

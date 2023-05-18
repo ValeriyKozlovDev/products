@@ -1,23 +1,20 @@
-import { Router } from '@angular/router';
-import { ChangeDetectionStrategy, Component, Input, OnInit, inject, Provider } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, Provider } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
-import { Store } from '@ngrx/store';
-import { ReplaySubject, takeUntil } from 'rxjs';
-
-import { AuthFeature } from './store/auth.reducer';
-import { IUser } from './store/interfaces';
-
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
+import { Store } from '@ngrx/store';
+
+import { AuthFeature } from './store/auth.reducer';
+import { IUser } from './store/interfaces';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { login, register, setLoading, setUserLogin } from './store/auth.actions';
+import { login, register } from './store/auth.actions';
 import { AuthService } from './services/auth.service';
 import { DestroyDirective } from '../shared/directives/destroy.directive';
 import { SharedModule } from '../shared/shared.module';
 import { TextInputComponent } from '../shared/text-input/text-input.component';
 import { AuthGuard } from './guards/auth.guard';
+
 const INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
   multi: true,

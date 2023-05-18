@@ -1,8 +1,8 @@
-import { IUser } from './interfaces';
-import { createAction, createActionGroup, props } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 
 import { FormActions } from './auth.action.enum';
-import { IErrors } from 'src/app/features/products/interfaces/products.interfaces';
+import { IErrors } from '../../features/products/interfaces/products.interfaces';
+import { IUser } from './interfaces';
 
 export const changeAccessFlag = createAction(
   FormActions.CHANGE_ACCESS_FLAG,

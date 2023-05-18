@@ -1,14 +1,16 @@
 import { inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+
 import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { Store } from '@ngrx/store';
+import { exhaustMap, map, tap, catchError, of } from "rxjs";
+import jwtDecode from 'jwt-decode';
+
 import { login, loginOrRegisterFailure, loginOrRegisterSuccess, logout, register } from './auth.actions';
 import { AuthService } from "../services/auth.service";
-import { exhaustMap, map, tap, catchError, of } from "rxjs";
 import { IUser } from './interfaces';
-import jwtDecode from 'jwt-decode';
-import { Store } from '@ngrx/store';
-import { HttpErrorResponse } from '@angular/common/http';
-import { resetProducts } from 'src/app/features/products/store/products.actions';
-import { Router } from '@angular/router';
+import { resetProducts } from '../../features/products/store/products.actions';
 
 export const auth$ = createEffect(
   (

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -6,10 +7,9 @@ import { Observable } from 'rxjs';
 import { ProductsFeature } from './store/products.reducer';
 import { deleteProduct, getAllProducts } from './store/products.actions';
 import { IProduct } from './interfaces/products.interfaces';
-import { CommonModule } from '@angular/common';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 import { ProductComponent } from './components/product/product.component';
-import { EditComponent } from 'src/app/shared/edit/edit.component';
+import { EditComponent } from '../../shared/edit/edit.component';
 
 @Component({
   standalone: true,

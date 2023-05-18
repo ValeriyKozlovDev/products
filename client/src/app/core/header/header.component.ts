@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Store } from '@ngrx/store';
+
 import { SharedModule } from '../../shared/shared.module';
 import { AuthService } from '../../auth/services/auth.service';
-import { Store } from '@ngrx/store';
 import { logout } from '../../auth/store/auth.actions';
 
 @Component({

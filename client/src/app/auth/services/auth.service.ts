@@ -1,18 +1,16 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 
-import { Store } from '@ngrx/store';
-import { catchError, Observable, Subject, tap, throwError } from "rxjs";
+import { Observable } from "rxjs";
 
-import { IUser, AuthResponse } from '../store/interfaces';
-import { setLoading } from '../store/auth.actions';
+import { IUser } from '../store/interfaces';
 import { environment } from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient, private store: Store) { }
+  constructor(private http: HttpClient) { }
 
   public login(user: IUser): Observable<IUser | any> {
     return this.http.post(`${environment.baseUrl}/auth/login`, user)
